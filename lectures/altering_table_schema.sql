@@ -1,0 +1,17 @@
+-- ALTER 
+
+ALTER TABLE fav DROP COLUMN oops;
+
+ALTER TABLE post ALTER COLUMN content TYPE TEXT;
+
+ALTER TABLE fav ADD COLUMN howmuch integer;
+
+DELETE FROM account
+
+ALTER SEQUENCE account_id_seq RESTART WITH 1;
+
+ALTER SEQUENCE post_id_seq RESTART WITH 1;
+
+ALTER SEQUENCE comment_id_seq RESTART WITH 1;
+
+ALTER SEQUENCE fav_id_seq RESTART WITH 1;

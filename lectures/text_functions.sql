@@ -1,0 +1,57 @@
+DROP TABLE IF EXISTS textfun;
+CREATE TABLE textfun (
+    CONTENT TEXT
+);
+
+CREATE INDEX textfun_b ON textfun (CONTENT);
+
+SELECT * FROM pg_relation_size('textfun'), pg_indexes_size('textfun');
+
+INSERT INTO textfun (content) 
+SELECT (CASE WHEN (random() < 0.5)
+        THEN 'https://www.pg4e.com/neon/'
+        ELSE 'http://www.pg4e.com/LEMONS/'
+        END) || generate_series(100000, 200000);
+    
+SELECT * FROM pg_relation_size('textfun'), pg_indexes_size('textfun');
+
+SELECT CONTENT FROM textfun LIMIT 5;
+
+SELECT * FROM pg_relation_size('textfun'), pg_indexes_size('textfun');
+
+
+SELECT CONTENT FROM textfun WHERE CONTENT LIKE '%150000';
+
+SELECT upper(CONTENT) FROM textfun WHERE CONTENT LIKE '%150000';
+
+SELECT lower(CONTENT) FROM textfun WHERE CONTENT LIKE '%150000';
+
+SELECT RIGHT(CONTENT, 4) FROM textfun WHERE CONTENT LIKE '%150000';
+
+SELECT LEFT(CONTENT, 4) FROM textfun WHERE CONTENT LIKE '%150000';
+
+SELECT strpos(CONTENT, 'ttps://') FROM textfun WHERE CONTENT LIKE '%150001';
+
+SELECT substr(CONTENT, 2, 4) FROM textfun WHERE CONTENT LIKE '%150001';
+
+SELECT split_part(CONTENT, '/', 4) FROM textfun WHERE CONTENT LIKE '%150001';
+
+SELECT TRANSLATE(CONTENT, 'ht.p/', 'HT!P_') FROM textfun WHERE CONTENT LIKE '%150001';
+
+EXPLAIN ANALYZE SELECT CONTENT FROM textfun WHERE CONTENT LIKE 'racing%';
+
+EXPLAIN ANALYZE SELECT CONTENT FROM textfun WHERE CONTENT LIKE '%racing%';
+
+EXPLAIN ANALYZE SELECT CONTENT FROM textfun WHERE CONTENT ILIKE 'racing%';
+
+EXPLAIN ANALYZE SELECT CONTENT FROM textfun WHERE CONTENT LIKE '%150001%';
+
+EXPLAIN ANALYZE SELECT CONTENT FROM textfun WHERE CONTENT LIKE '%150001%' LIMIT 1;
+
+EXPLAIN ANALYZE SELECT CONTENT FROM textfun WHERE CONTENT IN 
+('https://www.pg4e.com/neon/150001', 'https://www.pg4e.com/neon/150001');
+
+EXPLAIN ANALYZE SELECT CONTENT FROM textfun 
+WHERE CONTENT IN (SELECT CONTENT FROM textfun WHERE CONTENT LIKE '%150001%');
+
+
